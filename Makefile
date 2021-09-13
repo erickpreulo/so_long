@@ -18,7 +18,7 @@ INCLUD = -I . -I /usr/X11/include -g
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = 
 
 AR = ar rcs
 
@@ -28,12 +28,12 @@ AR = ar rcs
 OBJ = $(SRC:.c=.o)
 
 $(NAME):	$(OBJ)
-			@$(CC) $(CFLAGS) -L /usr/X11/lib -l mlx -framework OpenGL -framework AppKit $(OBJ) -o $(NAME)
-			
+			@$(CC) $(CFLAGS) -l mlx -framework OpenGL -framework AppKit $(OBJ) -o $(NAME)
+#@$(CC) $(CFLAGS) -L /usr/X11/lib -l mlx -framework OpenGL -framework AppKit $(OBJ) -o $(NAME)
 all:		$(NAME)
 
 test:	re
-		@$(CC) $(CFLAGS) test.c $(NAME) -fsanitize=address -g
+		./$(NAME)
 
 clean:
 		${shell find . -type f -name "*.o" -delete}
@@ -42,4 +42,3 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
-
