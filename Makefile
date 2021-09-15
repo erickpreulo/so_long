@@ -6,7 +6,7 @@
 #    By: egomes <egomes@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/10 22:31:08 by egomes            #+#    #+#              #
-#    Updated: 2021/09/11 17:04:37 by egomes           ###   ########.fr        #
+#    Updated: 2021/09/14 03:08:41 by egomes           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,9 @@ NAME = so_long
 
 INCLUD = -I . -I /usr/X11/include -g
 
-CC = gcc
+CC = gcc -L /usr/X11/lib
 
-CFLAGS = 
+CFLAGS = #-Wall -Wextra -Werror
 
 AR = ar rcs
 
@@ -29,7 +29,7 @@ OBJ = $(SRC:.c=.o)
 
 $(NAME):	$(OBJ)
 			@$(CC) $(CFLAGS) -l mlx -framework OpenGL -framework AppKit $(OBJ) -o $(NAME)
-#@$(CC) $(CFLAGS) -L /usr/X11/lib -l mlx -framework OpenGL -framework AppKit $(OBJ) -o $(NAME)
+
 all:		$(NAME)
 
 test:	re
