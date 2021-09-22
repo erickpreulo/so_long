@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC = so_long.c
+SRC = so_long.c ft_itoa.c
 
 NAME = so_long
 
@@ -20,7 +20,7 @@ CC = gcc
 
 CFLAGS = #-Wall -Wextra -Werror
 
-LIB = -L /usr/X11/lib
+LIB = #-L /usr/X11/lib
 
 AR = ar rcs
 

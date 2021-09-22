@@ -15,12 +15,18 @@
 
 # include <stdio.h>
 # include <mlx.h>
+# include <stdlib.h>
 
 # define UP 126
 # define DOWN 125
 # define LEFT 123
 # define RIGHT 124
 
+#define STEP 64
+#define LARGURA 6
+#define ALTURA 13
+
 int		main(void);
+char	*ft_itoa(int n);
 
 #endif
