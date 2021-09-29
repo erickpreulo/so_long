@@ -6,80 +6,11 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:00 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/19 23:26:18 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 13:13:37 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-typedef struct	s_data {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_data;
-
-typedef struct s_texture
-{
-	void*	imag;
-	int		width;
-	int		height;
-}				t_texture;
-
-
-typedef struct s_player
-{
-	t_texture text;
-	int		x;
-	int		y;
-	int		steps;
-	int		show_name;
-}				t_player;
-
-typedef struct	s_vars {
-	void	*mlx;
-	void	*win;
-	int		i;
-	int		j;
-	t_player	player;
-}				t_vars;
-
-void		draw_game(t_vars *vars)
-{
-	t_texture	wall;
-	t_texture gras;
-	t_player *player;
-	char	*steps;
-
-	int i;
-	int j;
-	player = &vars->player;
-	wall.imag = mlx_xpm_file_to_image(vars->mlx, "texter.xpm", &wall.width, &wall.height);
-	gras.imag = mlx_xpm_file_to_image(vars->mlx, "gras.xpm", &gras.width, &gras.height);
-	i = 0;
-	while(i < LARGURA)
-	{
-		j = 0;
-		while (j < ALTURA)
-		{
-			if (i == 0 || j == 0 || i == LARGURA - 1 || j == ALTURA - 1)
-				mlx_put_image_to_window(vars->mlx, vars->win, wall.imag, i * STEP, j * STEP);
-			else
-				mlx_put_image_to_window(vars->mlx, vars->win, gras.imag, i * STEP, j * STEP);
-			if (i == player->x && j == player->y)
-				mlx_put_image_to_window(vars->mlx, vars->win, player->text.imag, i * STEP, j * STEP);
-			j++;
-		}
-		i++;
-	}
-	if (player->show_name)
-		mlx_string_put(vars->mlx, vars->win, player->x * STEP + 10, player->y * STEP - 15, 0xff0000, "erick");
-	steps = ft_itoa(player->steps);
-	mlx_string_put(vars->mlx, vars->win, 20, 20, 0xff0000, steps);
-	free(steps);
-}
-
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -89,43 +20,210 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	make_move(int *pos, int increment, int *steps)
+void	make_move(int *pos_player, int *pos_enemi, int increment, t_vars *vars)
 {
-	*pos += increment;
-	(*steps)++;
+	int i;
+	int j;
+
+	*pos_player += increment;
+	if (vars->x == 1)
+		*pos_enemi += increment;
+	i = vars->player.y * vars->maps.width + vars->player.x;
+	j = vars->player2.y * vars->maps.width + vars->player2.x;
+	if ((vars->maps.buf[i] == 'E' || vars->maps.buf[j] == 'E') && vars->coins.count == 0)
+	{
+		mlx_destroy_window(vars->mlx, vars->win);
+		printf("CONGRATULATIONS!!!\nSteps = %d\n", vars->player.steps);
+		free(vars->maps.buf);
+		exit(0);
+	}
+	if (vars->maps.buf[i] == 'S' && vars->savej == 0)
+	{
+		vars->player.y = vars->portal.y1;
+		vars->player.x = vars->portal.x1;
+	}
+	else if (vars->maps.buf[i] == 's' && vars->savej == 0)
+	{
+		vars->player.y = vars->portal.y;
+		vars->player.x = vars->portal.x;
+	}
+	if (vars->maps.buf[j] == 'S' && vars->savei == 0)
+	{
+		vars->player2.y = vars->portal.y1;
+		vars->player2.x = vars->portal.x1;
+	}
+	else if (vars->maps.buf[j] == 's' && vars->savei == 0)
+	{
+		vars->player2.y = vars->portal.y;
+		vars->player2.x = vars->portal.x;
+	}
+	if (vars->maps.buf[i] == '1' || vars->maps.buf[i] == 'E'
+		|| vars->maps.buf[j] == '1' || vars->maps.buf[j] == 'E')
+    	*pos_player -= increment;
+	else
+        vars->player.steps++;
+	i = vars->enemi.y * vars->maps.width + vars->enemi.x;
+	if (vars->maps.buf[i] == '1' || vars->maps.buf[i] == 'E' || vars->maps.buf[i] == 'C')
+    	*pos_enemi -= increment;
 }
 
 int	key_hook(int keycode, t_vars *vars)
 {
-	if (keycode == UP && vars->player.y > 1)
-		make_move(&vars->player.y, -1, &vars->player.steps);
-	// {
-	// 	vars->player.steps++;
-	// 	printf("UP\n");
-	// 	vars->player.y--;
-	// }
-	else if (keycode == DOWN && vars->player.y < ALTURA - 2)
-		make_move(&vars->player.y, 1, &vars->player.steps);
-	else if (keycode == LEFT && vars->player.x > 1)
-		make_move(&vars->player.x, -1, &vars->player.steps);
-	else if (keycode == RIGHT && vars->player.x < LARGURA - 2)
-		make_move(&vars->player.x, 1, &vars->player.steps);
+	int i;
+	int j;
+
+	vars->savei = 0;
+	vars->savej = 0;
+	i = vars->player.y * vars->maps.width + vars->player.x;
+	j = vars->player2.y * vars->maps.width + vars->player2.x;
+	if (keycode == UP)
+	{
+		if (vars->maps.buf[j] == 'S' || vars->maps.buf[j] == 's')
+		{
+			vars->savei = 1;
+			make_move(&vars->player.y, &vars->enemi.y, -1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player.y, &vars->enemi.y, -1, vars);
+	}
+	else if (keycode == DOWN)
+	{
+		if (vars->maps.buf[j] == 'S' || vars->maps.buf[j] == 's')
+		{
+			vars->savei = 1;
+			make_move(&vars->player.y, &vars->enemi.y, 1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player.y, &vars->enemi.y, 1, vars);
+	}
+	else if (keycode == LEFT)
+	{
+		vars->player.text.left = 1;
+		if (vars->maps.buf[j] == 'S' || vars->maps.buf[j] == 's')
+		{
+			vars->savei = 1;
+			make_move(&vars->player.x, &vars->enemi.x, - 1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player.x, &vars->enemi.x, - 1, vars);
+	}
+	else if (keycode == RIGHT)
+	{
+		if (vars->maps.buf[j] == 'S' || vars->maps.buf[j] == 's')
+		{
+			vars->savei = 1;
+			make_move(&vars->player.x, &vars->enemi.x, 1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player.x, &vars->enemi.x, 1, vars);
+	}
+	else if (keycode == UP2)
+	{
+		
+		if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's')
+		{
+			vars->savej = 1;
+			make_move(&vars->player2.y, &vars->enemi.y, -1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player2.y, &vars->enemi.y, -1, vars);
+	}
+	else if (keycode == DOWN2)
+	{
+		if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's')
+		{
+			vars->savej = 1;
+			make_move(&vars->player2.y, &vars->enemi.y, 1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player2.y, &vars->enemi.y, 1, vars);
+	}
+	else if (keycode == LEFT2)
+	{
+		vars->player2.text.left = 1;
+		if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's')
+		{
+			vars->savej = 1;
+			make_move(&vars->player2.x, &vars->enemi.x, - 1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player2.x, &vars->enemi.x, - 1, vars);
+	}
+	else if (keycode == RIGHT2)
+	{
+		if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's')
+		{
+			vars->savej = 1;
+			make_move(&vars->player2.x, &vars->enemi.x, 1, vars);
+			draw_game(vars);
+			return (0);
+		}
+		make_move(&vars->player2.x, &vars->enemi.x, 1, vars);
+	}
 	else if (keycode == 45)
+	{
 		vars->player.show_name = !vars->player.show_name;
+		if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's'
+			|| vars->maps.buf[j] == 'S' || vars->maps.buf[j] == 's')
+		{
+			if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's')
+				vars->savei = 1;
+			else
+				vars->savej = 1;
+			draw_game(vars);
+			return (0);
+		}
+	}
+	else if (keycode == 35)
+	{
+		vars->player2.show_name = !vars->player2.show_name;
+		if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's'
+			|| vars->maps.buf[j] == 'S' || vars->maps.buf[j] == 's')
+		{
+			if (vars->maps.buf[i] == 'S' || vars->maps.buf[i] == 's')
+				vars->savei = 1;
+			else
+				vars->savej = 1;
+			draw_game(vars);
+			return (0);
+		}
+	}
+	else if (keycode == END)
+	{
+		mlx_destroy_window(vars->mlx, vars->win);
+		printf("Steps = %d\nmissing coins = %d\nLOOSER!!!\n",
+			vars->player.steps, vars->coins.count);
+		free(vars->maps.buf);
+		exit(0);
+	}
 	draw_game(vars);
 	return (0);
 }
 
-void		init_player(t_player *player, t_vars *vars)
+void		init(t_player *player, t_vars *vars)
 {
-	player->text.imag = mlx_xpm_file_to_image(vars->mlx, "cara.xpm", &player->text.width, &player->text.height);
+	player->text.imag = mlx_xpm_file_to_image(vars->mlx, "xpm/mario_dir.xpm", &player->text.width, &player->text.height);
+	player->text.imag_esq = mlx_xpm_file_to_image(vars->mlx, "xpm/mario_esq.xpm", &player->text.width, &player->text.height);
+	vars->player2.text.imag = mlx_xpm_file_to_image(vars->mlx, "xpm/luigi_dir.xpm", &player->text.width, &player->text.height);
+	vars->player2.text.imag_esq = mlx_xpm_file_to_image(vars->mlx, "xpm/luigi_esq.xpm", &player->text.width, &player->text.height);
 	player->steps = 0;
-	player->x = 1;
-	player->y = 1;
 	player->show_name = 0;
+	vars->player2.show_name = 0;
+	if (vars->player2.p != 1)
+	{
+		vars->player2.x = vars->maps.height;
+		vars->player2.y = vars->maps.width;
+	}
 }
 
-int	main(void)
+int		main(int ac, char **av)
 {
 	t_vars	vars;
 	t_player *player;
@@ -133,11 +231,19 @@ int	main(void)
 	player = &vars.player;
 	int		*x;
 	int		*y;
-
+	if (ac != 2)
+	{
+		printf("Error\n");
+		exit(0);
+	}
+	init_map(&vars, av[1]);
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, STEP * LARGURA, STEP * ALTURA, "Hello world!");
-	init_player(player, &vars);
+	vars.last_update = 0;
+	vars.win = mlx_new_window(vars.mlx, STEP * vars.maps.width, STEP * vars.maps.height, "SO_LONG");
+	init(player, &vars);
 	draw_game(&vars);
+	if (vars.x > 1)
+		mlx_loop_hook(vars.mlx, enemi, &vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:21 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/14 03:10:59 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 13:10:16 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,101 @@
 # include <stdio.h>
 # include <mlx.h>
 # include <stdlib.h>
+# include <time.h>
+# include <unistd.h>
+# include <fcntl.h>
+#include <stdint.h>
 
-# define UP 126
-# define DOWN 125
-# define LEFT 123
-# define RIGHT 124
+# define END 53
+# define UP 13
+# define DOWN 1
+# define LEFT 0
+# define RIGHT 2
+# define UP2 126
+# define DOWN2 125
+# define LEFT2 123
+# define RIGHT2 124
 
 #define STEP 64
-#define LARGURA 6
+#define LARGURA 20
 #define ALTURA 13
 
-int		main(void);
+
+
+typedef struct	s_data
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
+typedef struct s_texture
+{
+	void*	imag;
+	void*	imag_esq;
+	int		width;
+	int		height;
+	int		left;
+	int		x;
+	int		y;
+	int		x1;
+	int		y1;
+}				t_texture;
+
+typedef struct s_maps
+{
+	char	*buf;
+	char	*map;
+	int		width;
+	int		height;
+}				t_maps;
+
+typedef struct s_coins
+{
+	void*	imag;
+	int		width;
+	int		height;
+	int		count;
+}				t_coins;
+
+typedef struct s_player
+{
+	t_texture text;
+	int		p;
+	int		x;
+	int		y;
+	int		steps;
+	int		show_name;
+}				t_player;
+
+typedef struct	s_vars {
+	void	*mlx;
+	void	*win;
+	int		i;
+	int		j;
+	int		x;
+	int		savei;
+	int		savej;
+	t_player	player;
+	t_player	player2;
+	t_player	enemi;
+	t_player	enemi1;
+	t_player	enemi2;
+	t_maps		maps;
+	t_coins		coins;
+	t_texture 	portal;
+	int64_t		last_update;
+}				t_vars;
+
+int		main(int ac, char **av);
 char	*ft_itoa(int n);
+int		get_next_line(int fd, char **line);
+void	init_map(t_vars *vars, char *map);
+char	*ft_strcat(char *dest, const char *src);
+int		ft_strlen(char *s);
+void	draw_game(t_vars *vars);
+int		enemi(t_vars *vars);
 
 #endif
