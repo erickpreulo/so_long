@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:21 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 13:10:16 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 18:08:30 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <time.h>
 # include <unistd.h>
 # include <fcntl.h>
-#include <stdint.h>
+# include <stdint.h>
 
 # define END 53
 # define UP 13
@@ -31,13 +31,11 @@
 # define LEFT2 123
 # define RIGHT2 124
 
-#define STEP 64
-#define LARGURA 20
-#define ALTURA 13
+# define STEP 64
+# define LARGURA 20
+# define ALTURA 13
 
-
-
-typedef struct	s_data
+typedef struct s_data
 {
 	void	*img;
 	char	*addr;
@@ -48,8 +46,8 @@ typedef struct	s_data
 
 typedef struct s_texture
 {
-	void*	imag;
-	void*	imag_esq;
+	void	*imag;
+	void	*imag_esq;
 	int		width;
 	int		height;
 	int		left;
@@ -65,11 +63,21 @@ typedef struct s_maps
 	char	*map;
 	int		width;
 	int		height;
+	int		i;
+	int		c;
+	int		e;
+	int		p;
+	int		p2;
+	int		s;
+	int		s2;
+	int		x2;
+	int		x3;
+	int		x4;
 }				t_maps;
 
 typedef struct s_coins
 {
-	void*	imag;
+	void	*imag;
 	int		width;
 	int		height;
 	int		count;
@@ -77,22 +85,25 @@ typedef struct s_coins
 
 typedef struct s_player
 {
-	t_texture text;
-	int		p;
-	int		x;
-	int		y;
-	int		steps;
-	int		show_name;
+	t_texture	text;
+	int			p;
+	int			x;
+	int			y;
+	int			steps;
+	int			show_name;
 }				t_player;
 
-typedef struct	s_vars {
-	void	*mlx;
-	void	*win;
-	int		i;
-	int		j;
-	int		x;
-	int		savei;
-	int		savej;
+typedef struct s_vars {
+	void		*mlx;
+	void		*win;
+	int			i;
+	int			j;
+	int			x;
+	int			savei;
+	int			savej;
+	t_texture	wall;
+	t_texture	gras;
+	t_texture	ex;
 	t_player	player;
 	t_player	player2;
 	t_player	enemi;
@@ -100,7 +111,7 @@ typedef struct	s_vars {
 	t_player	enemi2;
 	t_maps		maps;
 	t_coins		coins;
-	t_texture 	portal;
+	t_texture	portal;
 	int64_t		last_update;
 }				t_vars;
 
@@ -112,5 +123,14 @@ char	*ft_strcat(char *dest, const char *src);
 int		ft_strlen(char *s);
 void	draw_game(t_vars *vars);
 int		enemi(t_vars *vars);
+int		key_hook(int keycode, t_vars *vars);
+void	make_move(int *pos_player, int *pos_enemi, int increment, t_vars *vars);
+void	caught(t_vars *vars);
+void	print(t_vars *vars);
+void	validade_all_map(t_vars *vars, char *line);
+void	validade_line(t_vars *vars, char *line);
+void	validate_first_line(t_vars *vars, char *line);
+int		player2(t_vars *vars, int keycode, int i);
+int		player1(t_vars *vars, int keycode, int j);
 
 #endif

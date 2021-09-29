@@ -6,12 +6,13 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/28 19:40:16 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 14:26:36 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 16:51:16 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
+/*
 void		free_way_enemi(t_vars *vars)
 {
 	int i;
@@ -86,3 +87,4 @@ int	enemi(t_vars *vars)
 	draw_game(vars);
 	return(0);
 }
+*/
