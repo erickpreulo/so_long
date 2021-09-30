@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:00 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 23:53:17 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/30 02:34:29 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	main(int ac, char **av)
 	mlx_loop(vars.mlx);
 }
 
-/*
+/*				for work, need comment others_caracteres function
 int	main(int ac, char **av)
 {
 	t_vars		vars;

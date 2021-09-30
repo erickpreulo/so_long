@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 17:45:49 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/30 01:04:13 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/30 02:25:55 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,22 @@ void	find_in_map(t_vars *vars)
 		vars->maps.x4 += 1;
 }
 
+void	others_caracteres(t_vars *vars)
+{
+	if (vars->maps.buf[vars->maps.i] != 'P'
+		&& vars->maps.buf[vars->maps.i] != 'E'
+		&& vars->maps.buf[vars->maps.i] != 'C'
+		&& vars->maps.buf[vars->maps.i] != '1'
+		&& vars->maps.buf[vars->maps.i] != '0'
+		&& vars->maps.buf[vars->maps.i] != '2')
+	{
+		printf("Error\nMap invalid\n");
+		free(vars->maps.line);
+		free(vars->maps.buf);
+		exit(0);
+	}
+}
+
 void	validade_all_map(t_vars *vars)
 {
 	vars->maps.x2 = 0;
@@ -87,6 +103,7 @@ void	validade_all_map(t_vars *vars)
 	while (vars->maps.i < vars->maps.width * vars->maps.height)
 	{
 		find_in_map(vars);
+		others_caracteres(vars);
 		vars->maps.i++;
 	}
 	if (vars->maps.c == 0 || vars->maps.p != 1 || vars->maps.p2 > 1

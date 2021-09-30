@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:33:16 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 22:13:01 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/30 02:40:08 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ void	make_move(int *pos_player, int *pos_enemi, int increment, t_vars *vars)
 	i = vars->player.y * vars->maps.width + vars->player.x;
 	j = vars->player2.y * vars->maps.width + vars->player2.x;
 	make_move_portal(vars, i, j);
-	if (vars->maps.buf[i] == '1' || vars->maps.buf[i] == 'E'
-		|| vars->maps.buf[j] == '1' || vars->maps.buf[j] == 'E')
+	if (vars->maps.buf[i] == '1' || vars->maps.buf[j] == '1')
 		*pos_player -= increment;
 	else
 		vars->player.steps++;
