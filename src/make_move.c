@@ -6,13 +6,13 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:33:16 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 18:17:10 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 22:13:01 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-void	make_cont(t_vars *vars, int i, int j)
+void	make_cont(t_vars *vars, int j)
 {
 	if (vars->maps.buf[j] == 'S' && vars->savei == 0)
 	{
@@ -46,7 +46,7 @@ void	make_move_portal(t_vars *vars, int i, int j)
 		vars->player.y = vars->portal.y;
 		vars->player.x = vars->portal.x;
 	}
-	make_cont(vars, i, j);
+	make_cont(vars, j);
 }
 
 void	make_move(int *pos_player, int *pos_enemi, int increment, t_vars *vars)

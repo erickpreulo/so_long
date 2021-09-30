@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 14:49:57 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 17:19:14 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 23:54:46 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_player(t_vars *vars, int x, int y)
 void	draw_enemi(t_vars *vars, int x, int y)
 {
 	if (x == vars->enemi.x && y == vars->enemi.y
-		&& vars->x >= 1 && vars->enemi.p != 1)
+		&& vars->enemi.p != 1 && vars->x >= 1)
 		mlx_put_image_to_window(vars->mlx,
 			vars->win, vars->enemi.text.imag, x * STEP, y * STEP);
 	else if (x == vars->enemi.x && y == vars->enemi.y
@@ -65,19 +65,19 @@ void	draw_enemi(t_vars *vars, int x, int y)
 		mlx_put_image_to_window(vars->mlx,
 			vars->win, vars->enemi.text.imag_esq, x * STEP, y * STEP);
 	if (x == vars->enemi1.x && y == vars->enemi1.y
-		&& vars->x >= 1 && vars->enemi1.p != 1)
+		&& vars->x > 1 && vars->enemi1.p != 1)
 		mlx_put_image_to_window(vars->mlx,
 			vars->win, vars->enemi.text.imag, x * STEP, y * STEP);
 	else if (x == vars->enemi1.x && y == vars->enemi1.y
-		&& vars->x >= 1)
+		&& vars->x > 1)
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->enemi.text.imag_esq, x * STEP, y * STEP);
 	if (x == vars->enemi2.x && y == vars->enemi2.y
-		&& vars->x >= 1 && vars->enemi2.p != 1)
+		&& vars->x > 1 && vars->enemi2.p != 1)
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->enemi.text.imag, x * STEP, y * STEP);
 	else if (x == vars->enemi2.x && y == vars->enemi2.y
-		&& vars->x >= 1)
+		&& vars->x > 1)
 		mlx_put_image_to_window(vars->mlx, vars->win,
 			vars->enemi.text.imag_esq, x * STEP, y * STEP);
 }

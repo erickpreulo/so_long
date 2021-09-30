@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 18:48:18 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 17:19:16 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/30 00:59:57 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,23 @@ void	print(t_vars *vars)
 	vars->enemi.p = 0;
 	vars->enemi1.p = 0;
 	vars->enemi2.p = 0;
+	printf("STEP %s\n", steps);
 	free(steps);
 }
 
 void	caught(t_vars *vars)
 {
-	if (vars->enemi.x == vars->player.x && vars->enemi.y == vars->player.y
-		|| vars->enemi1.x == vars->player.x && vars->enemi1.y == vars->player.y
-		|| vars->enemi2.x == vars->player.x && vars->enemi2.y == vars->player.y
-		|| vars->enemi.x == vars->player2.x
-		&& vars->enemi.y == vars->player2.y
-		|| vars->enemi1.x == vars->player2.x
-		&& vars->enemi1.y == vars->player2.y
-		|| vars->enemi2.x == vars->player2.x
-		&& vars->enemi2.y == vars->player2.y)
+	if ((vars->enemi.x == vars->player.x && vars->enemi.y == vars->player.y)
+		|| (vars->enemi1.x == vars->player.x
+			&& vars->enemi1.y == vars->player.y)
+		|| (vars->enemi2.x == vars->player.x
+			&& vars->enemi2.y == vars->player.y)
+		|| (vars->enemi.x == vars->player2.x
+			&& vars->enemi.y == vars->player2.y)
+		|| (vars->enemi1.x == vars->player2.x
+			&& vars->enemi1.y == vars->player2.y)
+		|| (vars->enemi2.x == vars->player2.x
+			&& vars->enemi2.y == vars->player2.y))
 	{
 		mlx_destroy_window(vars->mlx, vars->win);
 		printf("CAUGHT!!!\n");

@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:21 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 18:08:30 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/30 01:04:22 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define DOWN2 125
 # define LEFT2 123
 # define RIGHT2 124
-
+# define BUFFER_SIZE 10
 # define STEP 64
 # define LARGURA 20
 # define ALTURA 13
@@ -61,6 +61,7 @@ typedef struct s_maps
 {
 	char	*buf;
 	char	*map;
+	char	*line;
 	int		width;
 	int		height;
 	int		i;
@@ -127,10 +128,16 @@ int		key_hook(int keycode, t_vars *vars);
 void	make_move(int *pos_player, int *pos_enemi, int increment, t_vars *vars);
 void	caught(t_vars *vars);
 void	print(t_vars *vars);
-void	validade_all_map(t_vars *vars, char *line);
-void	validade_line(t_vars *vars, char *line);
-void	validate_first_line(t_vars *vars, char *line);
+void	validade_all_map(t_vars *vars);
+void	validate_line(t_vars *vars);
+void	validate_first_line(t_vars *vars, int ret);
 int		player2(t_vars *vars, int keycode, int i);
 int		player1(t_vars *vars, int keycode, int j);
+int		ft_strlen(char *s);
+char	*ft_strdup(char *s);
+void	*ft_memcpy(void *dest, void *src, size_t n);
+char	*ft_strjoin(char *s1, char *s2);
+int		ft_has_nl(char *str);
+char	*ft_newstr(size_t size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 16:51:37 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 16:51:39 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 23:25:58 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_newstr(size_t size)
 	char	*str;
 
 	str = malloc((size + 1) * sizeof(char));
-	if (!(str))
+	if (!str)
 		return (NULL);
 	str[size] = '\0';
 	return (str);

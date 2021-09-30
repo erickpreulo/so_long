@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:00 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 16:51:45 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/29 23:53:17 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
+}
+
+void	init_enemi(t_vars *vars)
+{
+	if (vars->x == 1)
+	{
+		vars->enemi1.x = 0;
+		vars->enemi1.y = 0;
+		vars->enemi2.x = 0;
+		vars->enemi2.y = 0;
+	}
 }
 
 void	init(t_player *player, t_vars *vars)
@@ -38,14 +49,13 @@ void	init(t_player *player, t_vars *vars)
 		vars->player2.x = vars->maps.height;
 		vars->player2.y = vars->maps.width;
 	}
+	init_enemi(vars);
 }
 
 int	main(int ac, char **av)
 {
 	t_vars		vars;
 	t_player	*player;
-	int			*x;
-	int			*y;
 
 	player = &vars.player;
 	if (ac != 2)
@@ -63,5 +73,29 @@ int	main(int ac, char **av)
 	mlx_key_hook(vars.win, key_hook, &vars);
 	mlx_loop(vars.mlx);
 }
-/*if (vars.x > 1)
-		mlx_loop_hook(vars.mlx, enemi, &vars);*/
+
+/*
+int	main(int ac, char **av)
+{
+	t_vars		vars;
+	t_player	*player;
+
+	player = &vars.player;
+	if (ac != 2)
+	{
+		printf("Error\n");
+		exit(0);
+	}
+	init_map(&vars, av[1]);
+	vars.mlx = mlx_init();
+	vars.last_update = 0;
+	vars.win = mlx_new_window(vars.mlx,
+			STEP * vars.maps.width, STEP * vars.maps.height, "SO_LONG");
+	init(player, &vars);
+	draw_game(&vars);
+	if (vars.x > 1)
+		mlx_loop_hook(vars.mlx, enemi, &vars);
+	mlx_key_hook(vars.win, key_hook, &vars);
+	mlx_loop(vars.mlx);
+}
+*/
