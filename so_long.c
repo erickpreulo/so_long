@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:00 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/30 02:34:29 by egomes           ###   ########.fr       */
+/*   Updated: 2021/09/30 13:33:27 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,14 @@ void	init(t_player *player, t_vars *vars)
 	init_enemi(vars);
 }
 
+int	exit_so_long(t_vars *vars)
+{
+	if (vars && vars->win)
+		mlx_destroy_window(vars->mlx, vars->win);
+	printf("SEE YOU LATER\n");
+	exit(0);
+}
+
 int	main(int ac, char **av)
 {
 	t_vars		vars;
@@ -71,6 +79,7 @@ int	main(int ac, char **av)
 	init(player, &vars);
 	draw_game(&vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
+	mlx_hook(vars.win, 17, 0, exit_so_long, &vars);
 	mlx_loop(vars.mlx);
 }
 
