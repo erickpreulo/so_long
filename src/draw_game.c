@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/27 14:49:57 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/29 23:54:46 by egomes           ###   ########.fr       */
+/*   Updated: 2021/10/01 19:55:27 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,3 +132,5 @@ void	draw_game(t_vars *vars)
 	}
 	print(vars);
 }
+
+//system("osascript -e beep");

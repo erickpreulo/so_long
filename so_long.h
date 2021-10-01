@@ -6,7 +6,7 @@
 /*   By: egomes <egomes@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 22:31:21 by egomes            #+#    #+#             */
-/*   Updated: 2021/09/30 01:04:22 by egomes           ###   ########.fr       */
+/*   Updated: 2021/10/01 19:53:53 by egomes           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdint.h>
+# include <stdlib.h>
 
 # define END 53
 # define UP 13
